@@ -1,8 +1,13 @@
 package rewards.internal.restaurant;
 
 import common.money.Percentage;
-import org.springframework.dao.EmptyResultDataAccessException;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.stereotype.Repository;
+
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -42,8 +47,12 @@ import java.util.Map;
  * - Examine the stack trace and see if you can
  *   understand why. (If not, refer to lab document).
  *   We will fix this error in the next step.
+ *   
+ *   Answer: Moving @Autowired annotation to setter method causes the cache never be populated, 
+ *   so cache is null and we cannot invoke get on null objects
  */
 
+@Repository
 public class JdbcRestaurantRepository implements RestaurantRepository {
 
 	private DataSource dataSource;
@@ -59,7 +68,8 @@ public class JdbcRestaurantRepository implements RestaurantRepository {
 	 * restaurants. When the instance of JdbcRestaurantRepository is created, a
 	 * Restaurant cache is populated for read only access
 	 */
-
+	
+//	@Autowired // Removing this annotation will cause Spring to use the default constructor
 	public JdbcRestaurantRepository(DataSource dataSource) {
 		this.dataSource = dataSource;
 		this.populateRestaurantCache();
@@ -67,7 +77,8 @@ public class JdbcRestaurantRepository implements RestaurantRepository {
 
 	public JdbcRestaurantRepository() {
 	}
-
+	
+	@Autowired
 	public void setDataSource(DataSource dataSource) {
 		this.dataSource = dataSource;
 	}
@@ -91,7 +102,8 @@ public class JdbcRestaurantRepository implements RestaurantRepository {
 	 *   construction activity, so using a post-construct, rather than
 	 *   the constructor, is a better practice.
 	 */
-
+	
+	@PostConstruct
 	void populateRestaurantCache() {
 		restaurantCache = new HashMap<String, Restaurant>();
 		String sql = "select MERCHANT_NUMBER, NAME, BENEFIT_PERCENTAGE from T_RESTAURANT";
@@ -157,6 +169,8 @@ public class JdbcRestaurantRepository implements RestaurantRepository {
 	 *
 	 * TODO-10: Add a scheme to check if this method is being invoked
 	 * - Add System.out.println to this method.
+	 * 
+	 *  clearRestaurantCache method is not called at all
 	 *
 	 * TODO-11: Have this method to be invoked before a bean gets destroyed
 	 * - Re-run RewardNetworkTests.
@@ -166,6 +180,7 @@ public class JdbcRestaurantRepository implements RestaurantRepository {
 	 * - Re-run the test and you should be able to see
 	 *   that this method is now being called.
 	 */
+	@PreDestroy
 	public void clearRestaurantCache() {
 		restaurantCache.clear();
 	}
