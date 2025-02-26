@@ -19,40 +19,10 @@ import javax.sql.DataSource;
  * - Set the base package to pick up all the classes we have annotated so far.
  * - Save all changes, Re-run the RewardNetworkTests.  It should now pass.
  */
-@ComponentScan("rewards.internal")
 @Configuration
+@ComponentScan("rewards.internal")
 public class RewardsConfig {
 
-	DataSource dataSource;
-
-	public RewardsConfig(DataSource dataSource) {
-		this.dataSource = dataSource;
-	}
-
-	public RewardNetwork rewardNetwork(){
-		return new RewardNetworkImpl(
-			accountRepository(), 
-			restaurantRepository(), 
-			rewardRepository());
-	}
-
-	public AccountRepository accountRepository(){
-		JdbcAccountRepository repository = new JdbcAccountRepository();
-		repository.setDataSource(dataSource);
-		return repository;
-	}
-	
-	public RestaurantRepository restaurantRepository(){
-		JdbcRestaurantRepository repository = new JdbcRestaurantRepository(dataSource);
-		return repository;
-	}
-	
-	public RewardRepository rewardRepository(){
-		JdbcRewardRepository repository = new JdbcRewardRepository();
-		repository.setDataSource(dataSource);
-		return repository;
-	}
-	
 	// TODO-02: Remove all of the @Bean methods above.
 	// - Remove the code that autowires DataSource as well.
     // - Run the RewardNetworkTests test. It should fail. Why?
