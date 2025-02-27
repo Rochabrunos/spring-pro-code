@@ -99,10 +99,6 @@ public class RewardNetworkTests {
 	 */
 	@Autowired
 	private RewardNetwork rewardNetwork;
-
-	/**
-	 * Need this to enable clean shutdown at the end of the application
-	 */
 	
 	@Test
 	@DisplayName("Test if reward computation and distribution works")
