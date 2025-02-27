@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 
 import config.RewardsConfig;
-
+import config.AspectsConfig;
 
 /** 
  * TODO-05: Make this configuration include the aspect configuration. 
@@ -16,7 +16,7 @@ import config.RewardsConfig;
  * and you should see one line of LoggingAspect output in the console.	 
  */
 @Configuration
-@Import({RewardsConfig.class})
+@Import({RewardsConfig.class, AspectsConfig.class})
 public class SystemTestConfig {
 
 	
