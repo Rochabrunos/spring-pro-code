@@ -13,7 +13,7 @@ import javax.sql.DataSource;
  * See SimpleJndiHelper class to see how this works.
  */
 @Configuration
-@Profile("jndi")
+@Profile("jndi") // I didn't create this profile
 public class TestInfrastructureJndiConfig {
 
 	/**
