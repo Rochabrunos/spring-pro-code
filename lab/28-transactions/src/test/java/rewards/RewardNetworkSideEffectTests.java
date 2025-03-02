@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
 
@@ -79,7 +81,7 @@ public class RewardNetworkSideEffectTests {
 			corganInitialSavings = jdbcTemplate.queryForObject(SAVINGS_SQL, Double.class, "Corgan");
 		}
 	}
-
+	
 	private void runTest() {
 		Dining dining = Dining.createDining("100.00", "1234123412341234", "1234567890");
 		rewardNetwork.rewardAccountFor(dining);
@@ -90,11 +92,13 @@ public class RewardNetworkSideEffectTests {
 	}
 
 	@Test
+	@Transactional
 	public void testCollision1stTime() {
 		runTest();
 	}
 
 	@Test
+	@Transactional
 	public void testCollision2ndTime() {
 		runTest();
 	}
