@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import rewards.RewardNetwork;
 import rewards.internal.RewardNetworkImpl;
@@ -16,13 +15,14 @@ import rewards.internal.reward.JdbcRewardRepository;
 import rewards.internal.reward.RewardRepository;
 
 @Configuration
+@EnableJpaRepositories(basePackages="rewards.internal")
 public class RewardsConfig {
 
 	@Autowired
 	DataSource dataSource;
 		
 	@Bean
-	public RewardNetwork rewardNetwork(
+	RewardNetwork rewardNetwork(
 		AccountRepository accountRepository, 
 		RestaurantRepository restaurantRepository, 
 		RewardRepository rewardRepository ) {
@@ -33,7 +33,7 @@ public class RewardsConfig {
 	}
 
 	@Bean
-	public RewardRepository rewardRepository(){
+	RewardRepository rewardRepository(){
 		JdbcRewardRepository repository = new JdbcRewardRepository();
 		repository.setDataSource(dataSource);
 		return repository;

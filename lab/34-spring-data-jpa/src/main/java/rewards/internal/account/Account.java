@@ -31,7 +31,7 @@ import java.util.Set;
 public class Account {
 
 	@Id
-	@Column(name = "ID")
+	@Column(name = "id")
 	private Long entityId;
 
 	// No need for @Column, mapped automatically to NUMBER
