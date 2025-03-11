@@ -128,10 +128,8 @@ public class AccountController {
 		// a. Use accountManager's addBeneficiary method to add a beneficiary to an account
 		// b. Use the entityWithLocation method - like we did for createAccount().
 		accountManager.addBeneficiary(accountId, beneficiaryName);
-	
-		long beneficiaryId = accountManager.getAccount(accountId).getBeneficiary(beneficiaryName).getEntityId();
-		
-		return entityWithLocation(beneficiaryId);  // Modify this to return something
+			
+		return entityWithLocation(beneficiaryName);  // Modify this to return something
 	}
 
 	/**
